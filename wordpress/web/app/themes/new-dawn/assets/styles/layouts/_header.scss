@@ -1,0 +1,223 @@
+$z-index-menu: 10;
+$z-index-menu-button: $z-index-menu + 1;
+
+$menu-button-size: 40px;
+$nav-bar-height: $menu-button-size;
+$nav-bar-height-large-screen: 72px;
+
+@mixin large-menu-screen {
+  @media screen and (min-width: 1172px) {
+    @content;
+  }
+}
+
+html,
+body,
+header.banner {
+  height: 100%; // For child's "height: 100%" declaration to work
+}
+
+header.banner {
+  > .container {
+    height: 100%;
+
+    background: no-repeat fixed center top;
+    background-size: cover;
+  }
+
+  &.scrolled-down {
+    > #menu-btn-wrapper,
+    > .nav-primary {
+      position: fixed;
+      right: 0;
+    }
+
+    > #menu-btn-wrapper {
+      margin-top: 0;
+      top: - $menu-button-size;
+
+      > button:after {
+        content: "";
+        margin-right: 0;
+      }
+    }
+
+    > .nav-primary {
+      background-color: $gray-darker;
+
+      width: 100%;
+
+      top: 0;
+      @include large-menu-screen {
+        top: - $nav-bar-height-large-screen;
+      }
+    }
+  }
+
+  &.menu-open {
+    // Precise selector needed to take precedence
+    > #menu-btn-wrapper > button:before {
+      content: $fa-var-times;
+      margin-left: $spacer-unit-size + 2px;
+    }
+
+    .menu-all-pages-as-single-container {
+      box-shadow: 0 .25em .5em 0 rgba(0, 0, 0, .2);
+    }
+  }
+}
+
+#menu-btn-wrapper > button,
+#menu-all-pages-as-single,
+.nav-primary > .menu-all-pages-as-single-container a {
+  background-color: $gray-darker;
+  color: $well-border;
+}
+
+#menu-btn-wrapper {
+  z-index: $z-index-menu-button;
+
+  margin-top: -$nav-bar-height;
+  @include large-menu-screen {
+    margin-top: -$nav-bar-height-large-screen;
+  }
+
+  @include clearfix;
+
+  > button {
+    float: right;
+
+    min-width: $menu-button-size;
+    min-height: $menu-button-size;
+
+    font-size: $font-size-large;
+
+    padding-top: 2px;
+
+    @include large-menu-screen {
+      display: none;
+    }
+
+    &:before,
+    &:after {
+      margin-left: $spacer-unit-size;
+    }
+
+    &:before {
+      @include icon-font($fa-var-bars);
+      font-size: 22px;
+    }
+
+    &:after {
+      content: "Menu";
+      font-family: $font-family-base;
+
+      margin-right: $spacer-unit-size;
+    }
+  }
+}
+
+.nav-primary {
+  clear: both;
+
+  z-index: $z-index-menu;
+  position: relative; // For z-index to be taken into account
+
+  > .menu-all-pages-as-single-container {
+    text-align: center;
+    visibility: hidden;
+    overflow: hidden;
+
+    @include large-menu-screen {
+      visibility: visible;
+      height: $nav-bar-height-large-screen;
+    }
+
+    a {
+      padding: 0;
+
+      &:hover,
+      &:active,
+      &:focus {
+        color: white;
+        background-color: $gray-darker;
+      }
+
+      &:after {
+        content: "";
+      }
+    }
+  }
+
+  #menu-all-pages-as-single {
+    padding: 0.5em 0;
+  }
+
+  .menu-item {
+    line-height: 1;
+    padding: 0.5em;
+
+    // Override default
+    margin-top: 0;
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  @include medium-screen {
+    font-size: 16px;
+
+    #menu-all-pages-as-single {
+      padding: 0;
+
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+    }
+
+    .menu-item {
+      width: (100% / 3);
+      min-height: $nav-bar-height-large-screen; // 2 lines
+    }
+  }
+
+  @include large-menu-screen {
+    > .menu-all-pages-as-single-container a {
+      background-color: transparent;
+
+      &:hover,
+      &:active,
+      &:focus {
+        background-color: transparent;
+      }
+    }
+
+    #menu-all-pages-as-single {
+      flex-wrap: nowrap;
+      background-color: transparentize($gray-darker, 0.4);
+    }
+
+    .menu-item {
+      width: auto;
+
+      padding-left: 1.5em;
+      padding-right: 1.5em;
+    }
+  }
+}
+
+.no-flexbox {
+  .nav-primary {
+    @include medium-screen {
+      #menu-all-pages-as-single {
+        display: block;
+        @include clearfix;
+
+        > .menu-item {
+          float: left;
+        }
+      }
+    }
+  }
+}

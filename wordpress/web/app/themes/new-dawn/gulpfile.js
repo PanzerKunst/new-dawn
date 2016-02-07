@@ -1,24 +1,24 @@
 // ## Globals
 var argv         = require('minimist')(process.argv.slice(2));
 var autoprefixer = require('gulp-autoprefixer');
-var browserSync  = require('browser-sync').create();
 var changed      = require('gulp-changed');
 var concat       = require('gulp-concat');
 var flatten      = require('gulp-flatten');
 var gulp         = require('gulp');
 var gulpif       = require('gulp-if');
 var imagemin     = require('gulp-imagemin');
-var jshint       = require('gulp-jshint');
+var eslint       = require('gulp-eslint');
 var lazypipe     = require('lazypipe');
 var less         = require('gulp-less');
 var merge        = require('merge-stream');
-var minifyCss    = require('gulp-minify-css');
+var cssNano      = require('gulp-cssnano');
 var plumber      = require('gulp-plumber');
 var rev          = require('gulp-rev');
 var runSequence  = require('run-sequence');
 var sass         = require('gulp-sass');
 var sourcemaps   = require('gulp-sourcemaps');
 var uglify       = require('gulp-uglify');
+var babel        = require("gulp-babel");
 
 // See https://github.com/austinpray/asset-builder
 var manifest = require('asset-builder')('./assets/manifest.json');
@@ -58,8 +58,6 @@ var enabled = {
   maps: !argv.production,
   // Fail styles task on error when `--production`
   failStyleTask: argv.production,
-  // Fail due to JSHint warnings only when `--production`
-  failJSHint: argv.production,
   // Strip debug statments from javascript when `--production`
   stripJSDebug: argv.production
 };
@@ -104,10 +102,7 @@ var cssTasks = function(filename) {
         'opera 12'
       ]
     })
-    .pipe(minifyCss, {
-      advanced: false,
-      rebase: false
-    })
+    .pipe(cssNano)
     .pipe(function() {
       return gulpif(enabled.rev, rev());
     })
@@ -130,12 +125,18 @@ var jsTasks = function(filename) {
     .pipe(function() {
       return gulpif(enabled.maps, sourcemaps.init());
     })
+    .pipe(function() {
+      return gulpif(filename === "main.js", babel({
+        filename: filename,
+        presets: ['es2015']
+      }));
+    })
     .pipe(concat, filename)
-    .pipe(uglify, {
+      /* Because compressed JS is awful to debug .pipe(uglify, {
       compress: {
         'drop_debugger': enabled.stripJSDebug
       }
-    })
+    }) */
     .pipe(function() {
       return gulpif(enabled.rev, rev());
     })
@@ -152,7 +153,6 @@ var jsTasks = function(filename) {
 var writeToManifest = function(directory) {
   return lazypipe()
     .pipe(gulp.dest, path.dist + directory)
-    .pipe(browserSync.stream, {match: '**/*.{js,css}'})
     .pipe(rev.manifest, revManifest, {
       base: path.dist,
       merge: true
@@ -185,9 +185,9 @@ gulp.task('styles', ['wiredep'], function() {
 });
 
 // ### Scripts
-// `gulp scripts` - Runs JSHint then compiles, combines, and optimizes Bower JS
+// `gulp scripts` - Runs ESLint then compiles, combines, and optimizes Bower JS
 // and project JS.
-gulp.task('scripts', ['jshint'], function() {
+gulp.task('scripts', ['lint'], function() {
   var merged = merge();
   manifest.forEachDependency('js', function(dep) {
     merged.add(
@@ -205,8 +205,7 @@ gulp.task('scripts', ['jshint'], function() {
 gulp.task('fonts', function() {
   return gulp.src(globs.fonts)
     .pipe(flatten())
-    .pipe(gulp.dest(path.dist + 'fonts'))
-    .pipe(browserSync.stream());
+    .pipe(gulp.dest(path.dist + 'fonts'));
 });
 
 // ### Images
@@ -218,19 +217,22 @@ gulp.task('images', function() {
       interlaced: true,
       svgoPlugins: [{removeUnknownsAndDefaults: false}, {cleanupIDs: false}]
     }))
-    .pipe(gulp.dest(path.dist + 'images'))
-    .pipe(browserSync.stream());
+    .pipe(gulp.dest(path.dist + 'images'));
 });
 
-// ### JSHint
-// `gulp jshint` - Lints configuration JSON and project JS.
-gulp.task('jshint', function() {
-  return gulp.src([
-    'bower.json', 'gulpfile.js'
-  ].concat(project.js))
-    .pipe(jshint())
-    .pipe(jshint.reporter('jshint-stylish'))
-    .pipe(gulpif(enabled.failJSHint, jshint.reporter('fail')));
+// ### ESLint
+// `gulp lint` - Lints project JS.
+gulp.task('lint', function() {
+  return gulp.src(manifest.dependencies["main.js"].files)
+    // eslint() attaches the lint output to the eslint property
+    // of the file object so it can be used by other modules.
+    .pipe(eslint())
+    // eslint.format() outputs the lint results to the console.
+    // Alternatively use eslint.formatEach() (see Docs).
+    .pipe(eslint.format())
+    // To have the process exit with an error code (1) on
+    // lint error, return the stream and pipe to failOnError last.
+    .pipe(eslint.failOnError());
 });
 
 // ### Clean
@@ -238,22 +240,9 @@ gulp.task('jshint', function() {
 gulp.task('clean', require('del').bind(null, [path.dist]));
 
 // ### Watch
-// `gulp watch` - Use BrowserSync to proxy your dev server and synchronize code
-// changes across devices. Specify the hostname of your dev server at
-// `manifest.config.devUrl`. When a modification is made to an asset, run the
-// build step for that asset and inject the changes into the page.
-// See: http://www.browsersync.io
 gulp.task('watch', function() {
-  browserSync.init({
-    files: ['{lib,templates}/**/*.php', '*.php'],
-    proxy: config.devUrl,
-    snippetOptions: {
-      whitelist: ['/wp-admin/admin-ajax.php'],
-      blacklist: ['/wp-admin/**']
-    }
-  });
   gulp.watch([path.source + 'styles/**/*'], ['styles']);
-  gulp.watch([path.source + 'scripts/**/*'], ['jshint', 'scripts']);
+  gulp.watch([path.source + 'scripts/**/*'], ['lint', 'scripts']);
   gulp.watch([path.source + 'fonts/**/*'], ['fonts']);
   gulp.watch([path.source + 'images/**/*'], ['images']);
   gulp.watch(['bower.json', 'assets/manifest.json'], ['build']);

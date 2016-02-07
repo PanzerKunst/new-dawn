@@ -1,0 +1,12 @@
+p:last-child {
+  margin-bottom: 0;
+}
+
+.brand {
+  font-weight: bold;
+
+  &:hover,
+  &:focus {
+    text-decoration: none;
+  }
+}

@@ -2,6 +2,12 @@
   "dependencies": {
     "main.js": {
       "files": [
+        "scripts/global.js",
+        "scripts/services/browser.js",
+        "scripts/services/animator.jquery.js",
+        "scripts/services/parallax.jquery.js",
+        "scripts/controllers/common.js",
+        "scripts/controllers/index.js",
         "scripts/main.js"
       ],
       "main": true
@@ -17,11 +23,10 @@
         "scripts/customizer.js"
       ]
     },
-    "jquery.js": {
-      "bower": ["jquery"]
+    "vendor.js": {
+      "files": [
+        "../vendor/modernizr-custom.js"
+      ]
     }
-  },
-  "config": {
-    "devUrl": "http://example.dev"
   }
 }

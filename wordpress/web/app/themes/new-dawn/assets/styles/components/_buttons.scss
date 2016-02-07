@@ -1,0 +1,128 @@
+button.styleless {
+  @include styleless-btn;
+  padding: 0;
+
+  &:focus {
+    @include styleless-btn;
+    outline: none;
+  }
+
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.btn {
+  @include transition(color $default-animation-duration ease, background-color $default-animation-duration ease, border-color $default-animation-duration ease);
+  border-radius: 0.25em;
+
+  padding: 0.4em 1em;
+
+  > .fa-spinner {
+    margin: 0 0.5em 0 -0.6em;
+  }
+}
+
+.btn-lg {
+  padding: 0.8em 2em;
+
+  > .fa-spinner {
+    margin-left: -1.25em;
+  }
+}
+
+.btn-xs {
+  padding: 0.2em 0.5em;
+
+  font-size: $font-size-sm;
+}
+
+.btn-default,
+a.btn-default,
+.btn-primary,
+a.btn-primary,
+.btn-success,
+a.btn-success,
+.btn-info,
+a.btn-info,
+.btn-warning,
+a.btn-warning,
+.btn-danger,
+a.btn-danger,
+.btn.sign-in-with-linkedin {
+  color: white;
+}
+
+.btn-default,
+a.btn-default {
+  background-color: $grey;
+  border-color: $grey;
+
+  &:active,
+  &:focus,
+  &:hover,
+  &:active:focus {
+    background-color: darken($grey, 15%);
+    border-color: darken($grey, 25%);
+
+    color: white;
+  }
+
+  &[disabled],
+  &[disabled]:active,
+  &[disabled]:focus,
+  &[disabled]:hover {
+    background-color: lighten($grey, 35%);
+    border-color: lighten($grey, 35%);
+  }
+}
+
+.btn-primary,
+a.btn-primary {
+  background-color: $primary-btn-color;
+  border-color: $primary-btn-color;
+
+  &:active,
+  &:focus,
+  &:hover,
+  &:active:focus {
+    background-color: darken($primary-btn-color, 15%);
+    border-color: darken($primary-btn-color, 25%);
+  }
+
+  &[disabled],
+  &[disabled]:active,
+  &[disabled]:focus,
+  &[disabled]:hover {
+    background-color: $primary-btn-color;
+    border-color: $primary-btn-color;
+  }
+}
+
+.btn.secondary {
+  @include styleless-btn;
+
+  color: $secondary-btn-color;
+  border: 2px solid $secondary-btn-color;
+
+  &:active,
+  &:focus,
+  &:hover {
+    color: $background-body-color;
+    border-color: darken($secondary-btn-color, 25%);
+    background-color: darken($secondary-btn-color, 15%);
+  }
+
+  &[disabled],
+  &[disabled]:active,
+  &[disabled]:focus,
+  &[disabled]:hover {
+    color: $secondary-btn-color;
+    border-color: $secondary-btn-color;
+    background-color: $background-body-color;
+  }
+}
+
+.btn-file-upload {
+  padding: 0.18em 0.95em;
+}
