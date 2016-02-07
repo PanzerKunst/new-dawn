@@ -1,10 +1,10 @@
 "use strict";
 
 CB.Controllers.Index = P(function(c) {
-  c.menuBtnTopPosWhenHidden = -40;
-  c.navBarTopPosWhenHidden = -72;
-  c.menuBtnTopPosWhenHiddenPx = c.menuBtnTopPosWhenHidden + "px";
-  c.navBarTopPosWhenHiddenPx = c.navBarTopPosWhenHidden + "px";
+  c.initialMenuBtnTopPos = -40;
+  c.initialNavBarTopPos = -72;
+  c.initialMenuBtnTopPosPx = c.initialMenuBtnTopPos + "px";
+  c.initialNavBarTopPosPx = c.initialNavBarTopPos + "px";
 
   c.init = function() {
     this._initElements();
@@ -62,11 +62,13 @@ CB.Controllers.Index = P(function(c) {
 
   c._onScroll = function() {
     const scrollPos = this.$window.scrollTop();
-    const wasScrolledDownEnough = this.scrollPos >= this.windowHeight;
-    let isScrolledDownEnough = scrollPos >= this.windowHeight + this.navBarTopPosWhenHidden;
+
+    let wasScrolledDownEnough = this.scrollPos >= this.windowHeight + this.initialNavBarTopPos;
+    let isScrolledDownEnough = scrollPos >= this.windowHeight + this.initialNavBarTopPos;
 
     if (this.$menuBtn.is(":visible")) {
-      isScrolledDownEnough = scrollPos >= this.windowHeight + this.menuBtnTopPosWhenHidden;
+      wasScrolledDownEnough = this.scrollPos >= this.windowHeight + this.initialMenuBtnTopPos;
+      isScrolledDownEnough = scrollPos >= this.windowHeight + this.initialMenuBtnTopPos;
     }
 
     this.$siteHeader.toggleClass("scrolled-down", isScrolledDownEnough);
@@ -76,14 +78,14 @@ CB.Controllers.Index = P(function(c) {
         this._closeMenu();
 
         if (!wasScrolledDownEnough && this._isScrollDown(scrollPos) && this.$menuBtnWrapper.css("top") === "0px") {
-          TweenLite.set(this.$menuBtnWrapper, {top: this.menuBtnTopPosWhenHiddenPx});
-        } else if (this.$menuBtnWrapper.css("top") === this.menuBtnTopPosWhenHiddenPx) {
+          TweenLite.set(this.$menuBtnWrapper, {top: this.initialMenuBtnTopPosPx});
+        } else if (this.$menuBtnWrapper.css("top") === this.initialMenuBtnTopPosPx) {
           TweenLite.to(this.$menuBtnWrapper, CB.animationDurations.default, {top: 0});
         }
       } else {
         if (!wasScrolledDownEnough && this._isScrollDown(scrollPos) && this.$nav.css("top") === "0px") {
-          TweenLite.set(this.$nav, {top: this.navBarTopPosWhenHiddenPx});
-        } else if (this.$nav.css("top") === this.navBarTopPosWhenHiddenPx) {
+          TweenLite.set(this.$nav, {top: this.initialNavBarTopPosPx});
+        } else if (this.$nav.css("top") === this.initialNavBarTopPosPx) {
           TweenLite.to(this.$nav, CB.animationDurations.default, {top: 0});
         }
       }
