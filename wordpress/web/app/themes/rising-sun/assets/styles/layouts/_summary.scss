@@ -1,0 +1,22 @@
+li#summary {
+  > header {
+    display: none;
+  }
+
+  > article {
+    $section-padding-top: $spacer-unit-size * 5;
+
+    padding-top: $section-padding-top;
+    @include medium-screen {
+      padding-top: $section-padding-top * $medium-screen-ratio-l;
+    }
+  }
+
+  #ethic-list {
+    margin-top: -$content-element-margin-bottom;
+
+    > li {
+      margin-top: 0;
+    }
+  }
+}

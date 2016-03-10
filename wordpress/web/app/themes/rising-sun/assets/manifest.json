@@ -1,0 +1,34 @@
+{
+  "dependencies": {
+    "main.js": {
+      "files": [
+        "scripts/main.js",
+        "scripts/global.js",
+        "scripts/services/browser.js",
+        "scripts/services/animator.jquery.js",
+        "scripts/services/parallax.jquery.js",
+        "scripts/services/gallery.js",
+        "scripts/controllers/common.js",
+        "scripts/controllers/index.js"
+      ],
+      "main": true
+    },
+    "main.css": {
+      "files": [
+        "styles/main.scss"
+      ],
+      "main": true
+    },
+    "customizer.js": {
+      "files": [
+        "scripts/customizer.js"
+      ]
+    },
+    "vendor.js": {
+      "files": [
+        "../vendor/modernizr-custom.js",
+        "../vendor/ps-gallery.js"
+      ]
+    }
+  }
+}

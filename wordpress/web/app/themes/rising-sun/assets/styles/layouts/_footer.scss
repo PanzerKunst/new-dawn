@@ -1,0 +1,14 @@
+body {
+  min-height: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  > .wrap {
+    flex-grow: 1;
+  }
+}
+
+.no-flexbox {
+  // TODO
+}

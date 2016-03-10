@@ -1,0 +1,15 @@
+body.page > .container {
+  padding: 0 $spacer-unit-size;
+
+  @include medium-screen {
+    padding-left: 0;
+    padding-right: 0;
+
+    margin: 0 auto;
+    max-width: $medium-content-width;
+  }
+
+  @include large-screen {
+    max-width: $large-content-width;
+  }
+}

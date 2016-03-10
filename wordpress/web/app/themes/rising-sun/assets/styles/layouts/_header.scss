@@ -1,0 +1,67 @@
+html,
+body {
+  height: 100%; // For child's "height: 100%" declaration to work
+}
+
+header.banner > .container {
+  padding: 0 $spacer-unit-size;
+
+  .brand {
+    font-weight: bold;
+    color: $text-color;
+    font-size: 1.5em;
+
+    &:hover,
+    &:active,
+    &:focus {
+      text-decoration: none;
+      background-color: transparent;
+    }
+  }
+
+  @include medium-screen {
+    padding-left: 0;
+    padding-right: 0;
+
+    > div,
+    > h1 {
+      margin: 0 auto;
+      max-width: $medium-content-width;
+    }
+  }
+
+  @include large-screen {
+    > div,
+    > h1 {
+      max-width: $large-content-width;
+    }
+  }
+}
+
+body.page {
+  header.banner {
+    > .container {
+      background-image: none;
+
+      > h1,
+      > p {
+        display: none;
+      }
+    }
+
+    #menu-btn-wrapper,
+    > .nav-primary {
+      display: none;
+    }
+  }
+
+  .page-header {
+    border-bottom: 0;
+
+    > h1 {
+      text-shadow: none;
+
+      padding: 0 0 0.5em 0;
+    }
+  }
+}

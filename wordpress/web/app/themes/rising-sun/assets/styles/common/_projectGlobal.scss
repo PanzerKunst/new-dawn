@@ -1,0 +1,12 @@
+@mixin short-titled-page-header {
+  > header {
+    @include medium-screen {
+      // Extra padding for the background picture to look better because title is on 1 line only
+      padding-top: 6.5%;
+    }
+
+    @include large-screen {
+      padding-top: 0;
+    }
+  }
+}

@@ -1,0 +1,43 @@
+$thumb-size: 200px;
+$figure-margin: $spacer-unit-size / 4;
+
+.cbr-gallery {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+
+  margin-bottom: $content-element-margin-bottom;
+
+  > figure {
+    flex-basis: $thumb-size;
+    height: $thumb-size;
+
+    margin: $figure-margin;
+
+    > a {
+      display: block;
+      height: 100%;
+
+      background-size: $thumb-size $thumb-size;
+
+      &:hover,
+      &:active {
+        &::after {
+          content: none;
+        }
+      }
+    }
+  }
+}
+
+.no-flexbox {
+  .cbr-gallery {
+    display: inline-block;
+
+    > figure {
+      display: inline-block;
+      width: $thumb-size;
+      background-size: $thumb-size $thumb-size;
+    }
+  }
+}
