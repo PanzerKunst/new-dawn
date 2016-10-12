@@ -10,6 +10,7 @@
  <div class="cbr-gallery">
  <figure data-file-name="young-forest-1.jpg" data-size="1334x1000"></figure>
  <figure data-file-name="young-forest-2.jpg" data-size="1334x1000"></figure>
+ <figure data-file-name="young-forest-3.jpg" data-size="1334x1000"></figure>
  </div>
  */
 

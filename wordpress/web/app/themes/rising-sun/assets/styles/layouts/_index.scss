@@ -24,11 +24,6 @@ body.home {
       background: no-repeat scroll center top;
       background-size: cover;
 
-      .brand,
-      > p {
-        @include text-shadow;
-      }
-
       > h1,
       > p {
         display: block;
@@ -44,6 +39,7 @@ body.home {
         font-size: 1.5em;
         text-align: center;
         @include tight-letter-spacing;
+        @include text-shadow;
 
         > span {
           margin-right: 0.5em;

@@ -1,14 +1,50 @@
 body {
+  /* TODO: fails miserably on the iPhone
   min-height: 100%;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
 
   > .wrap {
     flex-grow: 1;
+  } */
+
+  > footer {
+    background-color: $gray-darker;
+    color: $background-body-color;
+
+    > .container {
+      padding: 10vh $spacer-unit-size;
+
+      @include medium-screen {
+        padding-left: 0;
+        padding-right: 0;
+
+        margin-left: auto;
+        margin-right: auto;
+        max-width: $medium-content-width;
+      }
+
+      @include large-screen {
+        max-width: $large-content-width;
+      }
+
+      text-align: center;
+    }
+
+    a:hover,
+    a:active {
+      color: $gray-darker;
+    }
+
+    .fa-home {
+      font-size: 1.5em;
+
+      &:hover,
+      &:active {
+        color: $action-color;
+        background-color: transparent;
+      }
+    }
   }
 }
 
-.no-flexbox {
-  // TODO
-}

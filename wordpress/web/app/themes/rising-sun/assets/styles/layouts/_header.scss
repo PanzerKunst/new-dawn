@@ -7,9 +7,22 @@ header.banner > .container {
   padding: 0 $spacer-unit-size;
 
   .brand {
-    font-weight: bold;
-    color: $text-color;
-    font-size: 1.5em;
+    color: transparent;
+
+    $logo-location-x: -400px;
+    $logo-location-y: 0;
+
+    @include hdpi-sprite;
+    background-position: $logo-location-x $logo-location-y;
+    @include hidpi {
+      background-position: half-pos($logo-location-x, $logo-location-y);
+    }
+
+    display: inline-block;
+    width: 103px;
+    height: 33px;
+
+    margin-top: 0.3em;
 
     &:hover,
     &:active,
@@ -22,6 +35,19 @@ header.banner > .container {
   @include medium-screen {
     padding-left: 0;
     padding-right: 0;
+
+    .brand {
+      $logo-location-x: 0;
+      $logo-location-y: 0;
+
+      background-position: $logo-location-x $logo-location-y;
+      @include hidpi {
+        background-position: half-pos($logo-location-x, $logo-location-y);
+      }
+
+      width: 156px;
+      height: 50px;
+    }
 
     > div,
     > h1 {

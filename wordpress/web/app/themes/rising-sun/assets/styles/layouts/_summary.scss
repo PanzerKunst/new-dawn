@@ -1,4 +1,4 @@
-li#summary {
+#summary {
   > header {
     display: none;
   }
@@ -13,10 +13,19 @@ li#summary {
   }
 
   #ethic-list {
-    margin-top: -$content-element-margin-bottom;
+    display: none;
+  }
 
-    > li {
-      margin-top: 0;
+  img {
+    display: block;
+    margin: -$content-element-margin-bottom auto $content-element-margin-bottom*2 auto;
+
+    @include medium-screen {
+      max-width: 500px;
     }
+  }
+
+  .btn-primary {
+    margin-bottom: $content-element-margin-bottom * 2;
   }
 }
